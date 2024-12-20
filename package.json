@@ -1,0 +1,17 @@
+{
+  "name": "monster-mayhem-rpg",
+  "version": "1.0.0",
+  "description": "In this practice project, I practiced fundamental programming concepts in JavaScript by coding a Role Playing Game. Experimented with arrays, strings, objects, functions, loops, if/else statements, and more.",
+  "main": "./src/script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vite": "^5.4.11"
+  }
+}
