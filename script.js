@@ -1,10 +1,23 @@
-import Enemy from "./classes/enemy.js";
-import Player from "./classes/player.js";
 import Weapon from "./classes/weapon.js";
+import Player from "./classes/player.js";
+import Inventory from "./classes/inventory.js";
+import Enemy from "./classes/enemy.js";
+
+// Weapon(name, damage, price)
+const dagger = new Weapon("Dagger", 4, 1);
+const handAxe = new Weapon("Handaxe", 6, 25);
+const longsword = new Weapon("Longsword", 8, 30);
+const greatsword = new Weapon("Greatsword", 12, 40);
+
+const weapons = [dagger, handAxe, longsword, greatsword];
 
 // Player(name, hp, xp, armorClass, attack, gold)
 const red = new Player("Red", 100, 0, 15, 3, 50);
 red.sayHi();
+
+// Inventory(owner,gold, weapon)
+const redInventory = new Inventory(red.name, red.gold, dagger);
+console.log(redInventory);
 
 // Enemy(name, armorClass, hitPoints, attack, xp, gold)
 const wolf = new Enemy("Wolf", 13, 11, 4, 50, 3);
@@ -18,14 +31,6 @@ const enemies = [wolf, skeleton, ooze];
 // const owlbear = new Enemy("Owl Bear", 13, 59, 14, 700, 15);
 // const blackDragon = new Enemy("Black Dragon", 18, 127, 40, 2900, 50);
 // const horndedDevil = new Enemy("Hornded Devil", 18, 178, 30, 7200, 100);
-
-// Weapon(name, damage)
-const dagger = new Weapon("Dagger", 4);
-const handAxe = new Weapon("Handaxe", 6);
-const longsword = new Weapon("Longsword", 8);
-const greatsword = new Weapon("Greatsword", 12);
-
-const weapons = [dagger, handAxe, longsword, greatsword];
 
 let currentWeaponIndex = 0;
 let fighting;
@@ -157,6 +162,9 @@ function buyHealth() {
 }
 
 function buyWeapon() {
+  redInventory.addWeapon(weapons[currentWeaponIndex + 1]);
+  console.log(redInventory);
+
   if (currentWeaponIndex < weapons.length - 1) {
     if (red.gold >= 30) {
       red.gold -= 30;
