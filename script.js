@@ -46,15 +46,16 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+const weaponNameText = document.querySelector("#weaponNameText");
 
 playerNameText.innerText = red.name;
 armorClassText.innerHTML = red.armorClass;
-
+weaponNameText.innerText = weapons[currentWeaponIndex].name;
 
 const locations = [
   {
     name: "town square",
-    "button text": ["Go to store", "Go to cave", "Fight dragon"],
+    "button text": ["Go to store", "Go to cave", "Fight Ooze"],
     "button functions": [goStore, goCave, fightDragon],
     text: 'You are in the town square. You see a sign that says "Store".',
   },
@@ -100,7 +101,7 @@ const locations = [
     name: "win",
     "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
     "button functions": [restart, restart, restart],
-    text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389;",
+    text: "You defeat the monsters! YOU WIN THE GAME! &#x1F389;",
   },
   {
     name: "easter egg",
@@ -168,6 +169,7 @@ function buyWeapon() {
 
       inventory.push(newWeapon);
 
+      weaponNameText.innerText = newWeapon;
       text.innerText += " In your inventory you have: " + inventory;
     } else {
       text.innerText = "You do not have enough gold to buy a weapon.";
@@ -322,7 +324,7 @@ function restart() {
   red.hp = 100;
   red.gold = 50;
   currentWeaponIndex = 0;
-  inventory = ["stick"];
+  inventory = [weapons[currentWeaponIndex].name];
   goldText.innerText = red.gold;
   healthText.innerText = red.hp;
   xpText.innerText = red.xp;
