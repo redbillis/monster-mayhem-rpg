@@ -169,7 +169,7 @@ function buyWeapon() {
 
       inventory.push(newWeapon);
 
-      weaponNameText.innerText = newWeapon;
+      weaponNameText.innerText = inventory;
       text.innerText += " In your inventory you have: " + inventory;
     } else {
       text.innerText = "You do not have enough gold to buy a weapon.";
