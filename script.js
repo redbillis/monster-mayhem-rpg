@@ -3,6 +3,10 @@ import Player from "./classes/player.js";
 import Inventory from "./classes/inventory.js";
 import Enemy from "./classes/enemy.js";
 
+// alert(
+//   "This project is under development. You will notice bugs and things that don't make sense. They will all be solved as project continues. Thank you for playing!"
+// );
+
 // Weapon(name, damage, price)
 const dagger = new Weapon("Dagger", 4, 1);
 const handAxe = new Weapon("Handaxe", 6, 25);
@@ -56,6 +60,7 @@ const weaponNameText = document.querySelector("#weaponNameText");
 playerNameText.innerText = red.name;
 armorClassText.innerHTML = red.armorClass;
 weaponNameText.innerText = weapons[currentWeaponIndex].name;
+goldText.innerText = redInventory.gold;
 
 const locations = [
   {
@@ -76,7 +81,7 @@ const locations = [
   },
   {
     name: "cave",
-    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
+    "button text": ["Fight Wolf", "Fight Skeleton", "Go to town square"],
     "button functions": [fightSlime, fightBeast, goTown],
     text: "You enter the cave. You see some monsters.",
   },
@@ -93,7 +98,7 @@ const locations = [
       "Go to town square",
       "Go to town square",
     ],
-    "button functions": [goTown, goTown, easterEgg],
+    "button functions": [goTown, goTown, goTown],
     text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
   },
   {
@@ -107,12 +112,6 @@ const locations = [
     "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
     "button functions": [restart, restart, restart],
     text: "You defeat the monsters! YOU WIN THE GAME! &#x1F389;",
-  },
-  {
-    name: "easter egg",
-    "button text": ["2", "8", "Go to town square?"],
-    "button functions": [pickTwo, pickEight, goTown],
-    text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!",
   },
 ];
 
@@ -150,11 +149,11 @@ function goCave() {
 
 // Store Actions
 function buyHealth() {
-  if (red.gold >= 10) {
-    red.gold -= 10;
+  if (redInventory.gold >= 10) {
+    redInventory.gold -= 10;
     red.hp += 10;
 
-    goldText.innerText = red.gold;
+    goldText.innerText = redInventory.gold;
     healthText.innerText = red.hp;
   } else {
     text.innerText = "You do not have enough gold to buy health.";
@@ -162,30 +161,23 @@ function buyHealth() {
 }
 
 function buyWeapon() {
-  redInventory.addWeapon(weapons[currentWeaponIndex + 1]);
-  console.log(redInventory);
+  if (redInventory.gold >= 30) {
+    redInventory.addWeapon(weapons[currentWeaponIndex + 1]);
+    console.log(redInventory);
 
-  if (currentWeaponIndex < weapons.length - 1) {
-    if (red.gold >= 30) {
-      red.gold -= 30;
-      currentWeaponIndex++;
+    currentWeaponIndex++;
 
-      let newWeapon = weapons[currentWeaponIndex].name;
+    let newWeapon = weapons[currentWeaponIndex].name;
 
-      goldText.innerText = red.gold;
-      text.innerText = "You now have a " + newWeapon + ".";
+    goldText.innerText = redInventory.gold;
+    text.innerText = "You now have a " + newWeapon + ".";
 
-      inventory.push(newWeapon);
+    inventory.push(newWeapon);
 
-      weaponNameText.innerText = inventory;
-      text.innerText += " In your inventory you have: " + inventory;
-    } else {
-      text.innerText = "You do not have enough gold to buy a weapon.";
-    }
+    weaponNameText.innerText = inventory;
+    text.innerText += " In your inventory you have: " + inventory;
   } else {
-    text.innerText = "You already have the most powerful weapon!";
-    button2.innerText = "Sell weapon for 15 gold";
-    button2.onclick = sellWeapon;
+    text.innerText = "You do not have enough gold to buy a weapon.";
   }
 }
 
@@ -298,10 +290,10 @@ function attack() {
     }
   }
 
-  if (Math.random() <= 0.1 && inventory.length !== 1) {
-    text.innerText += " Your " + inventory.pop() + " breaks.";
-    currentWeaponIndex--;
-  }
+  // if (Math.random() <= 0.1 && inventory.length !== 1) {
+  //   text.innerText += " Your " + inventory.pop() + " breaks.";
+  //   currentWeaponIndex--;
+  // }
 }
 
 function dodge() {
@@ -310,10 +302,10 @@ function dodge() {
 }
 
 function defeatMonster() {
-  red.gold += Math.floor(enemies[fighting].gold * 6.7);
+  redInventory.gold += Math.floor(enemies[fighting].gold * 6.7);
   red.xp += enemies[fighting].xp;
 
-  goldText.innerText = red.gold;
+  goldText.innerText = redInventory.gold;
   xpText.innerText = red.xp;
 
   update(locations[4]);
@@ -333,48 +325,8 @@ function restart() {
   red.gold = 50;
   currentWeaponIndex = 0;
   inventory = [weapons[currentWeaponIndex].name];
-  goldText.innerText = red.gold;
+  goldText.innerText = redInventory.gold;
   healthText.innerText = red.hp;
   xpText.innerText = red.xp;
   goTown();
-}
-
-function easterEgg() {
-  update(locations[7]);
-}
-
-function pick(guess) {
-  const numbers = [];
-
-  while (numbers.length < 10) {
-    numbers.push(Math.floor(Math.random() * 11));
-  }
-
-  text.innerText = "You picked " + guess + ". Here are the random numbers:\n";
-
-  for (let i = 0; i < 10; i++) {
-    text.innerText += numbers[i] + "\n";
-  }
-
-  if (numbers.includes(guess)) {
-    text.innerText += "Right! You win 20 gold!";
-    red.gold += 20;
-    goldText.innerText = red.gold;
-  } else {
-    text.innerText += "Wrong! You lose 10 health!";
-    red.hp -= 10;
-    healthText.innerText = red.hp;
-
-    if (red.hp <= 0) {
-      lose();
-    }
-  }
-}
-
-function pickTwo() {
-  pick(2);
-}
-
-function pickEight() {
-  pick(8);
 }
