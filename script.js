@@ -3,9 +3,9 @@ import Player from "./classes/player.js";
 import Inventory from "./classes/inventory.js";
 import Enemy from "./classes/enemy.js";
 
-// alert(
-//   "This project is under development. You will notice bugs and things that don't make sense. They will all be solved as project continues. Thank you for playing!"
-// );
+alert(
+  "This project is under development. You will notice bugs and things that don't make sense. They will all be solved as project continues. Thank you for playing!"
+);
 
 // Weapon(name, damage, price)
 const dagger = new Weapon("Dagger", 4, 1);
